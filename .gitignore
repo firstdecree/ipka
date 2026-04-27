@@ -1,0 +1,7 @@
+node_modules
+pnpm-lock.yaml
+.vercel
+knowledge/hidden
+.vercelignore
+config.toml
+vercel-prod

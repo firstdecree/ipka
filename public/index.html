@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPKA - Improved Practical Knowledge Absorption</title>
+    <link rel="icon" href="assets/img/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/haproxy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ini.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-color: #f1f5f9;
+            background-image: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: #1e293b;
+            overflow: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .intro-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center;
+        }
+
+        .intro-section.mini {
+            transform: scale(0.75) translateX(15%);
+        }
+
+        .logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.06));
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-5px);
+        }
+
+        .typewriter-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .text {
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            background: linear-gradient(90deg, #2c3e50, #4ca1af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 2.22rem;
+            background-color: #4ca1af;
+            margin-left: 6px;
+            animation: blink 1.05s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .description {
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: #64748b;
+            text-align: center;
+            max-width: 450px;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.5s;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .sidebar {
+            width: 340px;
+            background: rgba(241, 245, 249, 0.98);
+            backdrop-filter: blur(40px);
+            border-right: 2px solid #94a3b8;
+            /* Much more visible border */
+            height: 100vh;
+            position: absolute;
+            left: -360px;
+            top: 0;
+            transition: left 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 40px 25px;
+            box-sizing: border-box;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, #e2e8f0, transparent);
+        }
+
+        .concept-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            flex: 1;
+            padding-right: 4px; /* Room for hover shift */
+        }
+
+        .concept-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            /* Visible slate border */
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #334155;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            text-transform: capitalize;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        .concept-item:hover {
+            transform: translateX(4px);
+            background: #f1f5f9;
+            border-color: #94a3b8;
+            color: #0f172a;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .concept-item::before {
+            content: "•";
+            color: #4ca1af;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -0.5em;
+            margin-right: 0.5em;
+            opacity: 0.6;
+        }
+
+        .info-sidebar {
+            width: calc(100vw - 340px);
+            background: rgba(248, 250, 252, 1);
+            backdrop-filter: blur(40px);
+            border-left: 1px solid #e2e8f0;
+            height: 100vh;
+            position: absolute;
+            left: 100vw;
+            top: 0;
+            transition: left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 50px 60px;
+
+            box-sizing: border-box;
+            box-shadow: 20px 0 50px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            z-index: 9;
+            overflow-y: auto;
+        }
+
+        .info-sidebar.active {
+            left: 340px;
+        }
+
+        .info-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #94a3b8;
+            transition: color 0.2s;
+        }
+
+        .info-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .info-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .info-tags span {
+            font-size: 0.75rem;
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .references-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 2.5em;
+            margin-bottom: 1em;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .markdown-body {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #334155;
+            flex: 1;
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3 {
+            color: #1e293b;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+        }
+
+        .markdown-body p {
+            margin-bottom: 0.5em;
+            list-style-type: disc !important;
+        }
+
+        .markdown-body ul,
+        .markdown-body ol {
+            margin-left: 20px;
+            margin-bottom: 1em;
+        }
+
+        .markdown-body>ul>li,
+        .markdown-body>ol>li {
+            margin-bottom: 0.5em;
+            list-style-position: outside;
+            list-style-type: disc;
+        }
+
+        .markdown-body pre {
+            background: #0d1117;
+            padding: 16px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 1.5em 0;
+            border: 1px solid #30363d;
+        }
+
+        .markdown-body code {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+
+        .markdown-body :not(pre)>code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #e11d48;
+        }
+
+        .meta-section {
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .meta-section div {
+            margin-bottom: 5px;
+        }
+
+        .meta-section strong {
+            color: #1e293b;
+        }
+
+        details {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        summary {
+            padding: 14px 20px;
+            font-weight: 600;
+            color: #1e293b;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        summary::before {
+            content: "→";
+            margin-right: 12px;
+            color: #4ca1af;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .details-content {
+            padding: 0 20px 20px 20px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+        }
+
+        /* Search Modal Styles */
+        .search-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 15vh;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .search-container {
+            width: 600px;
+            max-width: 90%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .search-modal.active .search-container {
+            transform: translateY(0);
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 20px 24px;
+            font-size: 1.25rem;
+            border: none;
+            border-bottom: 1px solid #e2e8f0;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            background: transparent;
+        }
+
+        #search-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .search-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-result-item {
+            padding: 16px 24px;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .search-result-item:hover {
+            background: #f8fafc;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .search-result-path {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .github-link {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            color: #475569;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 100; /* Ensure it's above everything */
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+        }
+
+        .info-sidebar.active ~ .github-link {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: translateY(-10px);
+        }
+
+        .github-link.visible {
+            opacity: 0.7;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        .github-link:hover {
+            color: #0f172a;
+            transform: scale(1.1);
+            opacity: 1 !important;
+        }
+
+        @media (max-width: 900px) {
+            .intro-section.mini {
+                transform: scale(0.65) translateY(25%);
+            }
+
+            .sidebar {
+                width: 100vw;
+                left: -100vw;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .info-sidebar {
+                width: 100vw;
+                left: 100vw;
+                padding: 60px 25px 40px;
+            }
+
+            .info-sidebar.active {
+                left: 0;
+            }
+
+            .info-sidebar.active ~ .github-link {
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-title">Knowledge Base</div>
+            <div id="concept-list" class="concept-list">
+                <!-- Concepts will be injected here -->
+            </div>
+        </aside>
+
+        <aside id="info-sidebar" class="info-sidebar">
+            <div class="info-close" onclick="document.getElementById('info-sidebar').classList.remove('active')">&times;
+            </div>
+            <div id="info-content"></div>
+        </aside>
+
+        <section id="intro-section" class="intro-section">
+            <img src="assets/img/logo.png" alt="IPKA Logo" class="logo">
+            <div class="typewriter-container">
+                <span class="text" id="typing-text"></span><span class="cursor"></span>
+            </div>
+            <p class="description">Master everything you want to learn, all in one place effortlessly and with complete
+                clarity.</p>
+        </section>
+
+        <a href="https://github.com/firstdecree/ipka" target="_blank" class="github-link" title="View Source on GitHub" id="github-link">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </svg>
+        </a>
+
+        <!-- Search Modal -->
+        <div id="search-modal" class="search-modal">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search knowledge base..." autocomplete="off">
+                <div id="search-results" class="search-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: false, theme: "default" })
+
+        const textElement = document.getElementById("typing-text")
+        const phrases = ["IPKA", "Improved Practical Knowledge Absorption"]
+        let phraseIndex = 0
+        let charIndex = phrases[0].length
+        let isDeleting = true
+
+        textElement.textContent = phrases[0]
+
+        function typeEffect() {
+            const currentPhrase = phrases[phraseIndex]
+
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1)
+                charIndex--
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1)
+                charIndex++
+            }
+
+            let speed = isDeleting ? 30 : 50
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                return
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false
+                phraseIndex = 1
+                speed = 200
+            }
+
+            setTimeout(typeEffect, speed)
+        }
+
+        setTimeout(typeEffect, 1800)
+
+        setTimeout(() => {
+            document.getElementById("intro-section").classList.add("mini")
+            document.getElementById("sidebar").classList.add("active")
+            document.getElementById("github-link").classList.add("visible")
+            fetchConcepts()
+        }, 5000)
+
+        let allConcepts = []
+
+        const searchModal = document.getElementById("search-modal")
+        const searchInput = document.getElementById("search-input")
+        const searchResults = document.getElementById("search-results")
+
+        document.addEventListener("keydown", (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
+                e.preventDefault()
+                searchModal.classList.add("active")
+                searchInput.value = ""
+                searchResults.innerHTML = ""
+                setTimeout(() => searchInput.focus(), 100)
+            }
+            if (e.key === "Escape" && searchModal.classList.contains("active")) {
+                searchModal.classList.remove("active")
+            }
+        })
+
+        searchModal.addEventListener("click", (e) => {
+            if (e.target === searchModal) searchModal.classList.remove("active")
+        })
+
+        searchInput.addEventListener("input", (e) => {
+            const query = e.target.value.toLowerCase()
+            if (!query) {
+                searchResults.innerHTML = ""
+                return
+            }
+
+            const matches = allConcepts.map((c, i) => ({ ...c, originalIndex: i })).filter(c => {
+                const titleMatch = (c.concept || c.path).toLowerCase().includes(query)
+                const tagMatch = c.tags ? c.tags.some(t => t.toLowerCase().includes(query)) : false
+                const catMatch = c.categories ? c.categories.some(cat => cat.toLowerCase().includes(query)) : false
+                return titleMatch || tagMatch || catMatch
+            })
+
+            searchResults.innerHTML = matches.map(c => `
+                <div class="search-result-item" onclick="selectSearchResult(${c.originalIndex})">
+                    <div class="search-result-title">${c.concept || c.path.split("/").pop()}</div>
+                    <div class="search-result-path">${c.tags ? "Tags: " + c.tags.join(", ") : ""}</div>
+                </div>
+            `).join("")
+        })
+
+        function selectSearchResult(index) {
+            searchModal.classList.remove("active")
+            openInfo(index)
+        }
+
+        async function fetchConcepts() {
+            try {
+                const response = await fetch("/api/knowledge")
+                allConcepts = await response.json()
+                const listContainer = document.getElementById("concept-list")
+
+                listContainer.innerHTML = allConcepts.map((concept, index) => {
+                    const displayName = concept.concept || concept.path.split("/").pop()
+                    return `<div class="concept-item" onclick="openInfo(${index})">${displayName}</div>`
+                }).join("")
+            } catch {
+            }
+        }
+
+        function openInfo(index) {
+            const concept = allConcepts[index]
+            const infoSidebar = document.getElementById("info-sidebar")
+            const infoContent = document.getElementById("info-content")
+
+            let html = `<div class="info-title">${concept.concept || concept.path}</div>`
+
+            html += `<div class="meta-section">`
+            if (concept.tags) html += `<div><strong>Tags:</strong> ${concept.tags.join(", ")}</div>`
+            if (concept.categories) html += `<div><strong>Categories:</strong> ${concept.categories.join(", ")}</div>`
+            if (concept.contributors) html += `<div><strong>Contributors:</strong> ${concept.contributors.join(", ")}</div>`
+            if (concept.lastUpdated) {
+                const displayDate = String(concept.lastUpdated).split("T")[0]
+                html += `<div><strong>Last Updated:</strong> ${displayDate}</div>`
+            }
+            html += `</div>`
+
+            if (concept.content) {
+                html += `<div class="markdown-body" style="margin-bottom: 20px;">${marked.parse(concept.content)}</div>`
+            }
+
+            infoContent.innerHTML = html
+            infoSidebar.classList.add("active")
+
+            document.querySelectorAll("#info-content .language-mermaid").forEach(async (block, index) => {
+                const graphDef = block.textContent
+                const id = `mermaid-${Date.now()}-${index}`
+                try {
+                    const { svg } = await mermaid.render(id, graphDef)
+                    const container = document.createElement("div")
+                    container.innerHTML = svg
+                    container.style.textAlign = "center"
+                    container.style.marginBottom = "20px"
+                    container.style.background = "white"
+                    container.style.padding = "15px"
+                    container.style.borderRadius = "8px"
+                    container.style.border = "1px solid #e2e8f0"
+                    block.parentElement.replaceWith(container)
+                } catch {
+                }
+            })
+
+            document.querySelectorAll("#info-content pre code").forEach((block) => {
+                if (block.classList.contains("language-mermaid")) return
+                try {
+                    if (block.classList.contains("language-conf")) {
+                        block.classList.replace("language-conf", "language-ini")
+                    }
+                    hljs.highlightElement(block)
+                } catch {
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
