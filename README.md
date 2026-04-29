@@ -1,6 +1,6 @@
 <div align="center"><h3>Improved Practical Knowledge Absorption</div>
 
-# IPKA (pre-alpha)
+# IPKA (alpha)
 Master everything you want to learn, all in one place effortlessly and with complete clarity.
 
 # ⚙️ Installations

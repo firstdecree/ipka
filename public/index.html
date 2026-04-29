@@ -122,7 +122,6 @@
             background: rgba(241, 245, 249, 0.98);
             backdrop-filter: blur(40px);
             border-right: 2px solid #94a3b8;
-            /* Much more visible border */
             height: 100vh;
             position: absolute;
             left: -360px;
@@ -165,7 +164,7 @@
             overflow-y: auto;
             overflow-x: hidden;
             flex: 1;
-            padding-right: 4px; /* Room for hover shift */
+            padding-right: 4px;
         }
 
         .concept-item {
@@ -174,7 +173,6 @@
             background: white;
             border-radius: 10px;
             border: 1px solid #cbd5e1;
-            /* Visible slate border */
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             color: #334155;
@@ -384,7 +382,6 @@
             padding-top: 15px;
         }
 
-        /* Search Modal Styles */
         .search-modal {
             position: fixed;
             top: 0;
@@ -473,7 +470,7 @@
             right: 25px;
             color: #475569;
             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 100; /* Ensure it's above everything */
+            z-index: 100;
             opacity: 0;
             pointer-events: none;
             transform: translateY(-10px);
@@ -534,7 +531,6 @@
         <aside id="sidebar" class="sidebar">
             <div class="sidebar-title">Knowledge Base</div>
             <div id="concept-list" class="concept-list">
-                <!-- Concepts will be injected here -->
             </div>
         </aside>
 
@@ -559,7 +555,6 @@
             </svg>
         </a>
 
-        <!-- Search Modal -->
         <div id="search-modal" class="search-modal">
             <div class="search-container">
                 <input type="text" id="search-input" placeholder="Search knowledge base..." autocomplete="off">

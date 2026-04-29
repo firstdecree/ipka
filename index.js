@@ -10,7 +10,7 @@ const path = require("path")
 const fs = require("fs")
 
 // Variables
-const config = parse(fs.readFileSync("./config.toml", "utf8"))
+const config = parse(fs.readFileSync(path.join(__dirname, "./config.toml"), "utf8"))
 const web = express()
 const port = config.web.port
 
